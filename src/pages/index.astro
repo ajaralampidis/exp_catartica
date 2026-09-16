@@ -10,9 +10,45 @@
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Expresión Catártica</title>
+		<style>
+			body {
+				max-width: 640px;
+				margin: 2rem auto;
+				font-family: sans-serif;
+			}
+			textarea {
+				width: 100%;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Expresión Catártica</h1>
 		<p>Generative art from your writing.</p>
+
+		<textarea id="writing" rows="6" placeholder="Write here..."></textarea>
+
+		<div>
+			<label for="canvas-preset">Canvas size</label>
+			<select id="canvas-preset">
+				<option value="square">Square (1:1)</option>
+				<option value="portrait">Portrait (4:5)</option>
+				<option value="story">Story (9:16)</option>
+				<option value="custom">Custom</option>
+			</select>
+			<input id="canvas-width" type="number" placeholder="Width" min="1" hidden />
+			<input id="canvas-height" type="number" placeholder="Height" min="1" hidden />
+		</div>
+
+		<div>
+			<button id="generate">Generate</button>
+			<button id="export-jpg">Export JPG</button>
+			<button id="export-svg">Export SVG</button>
+		</div>
+
+		<p id="error" role="alert"></p>
+
+		<div id="canvas-container"></div>
+
+		<script src="../widget/widget.ts"></script>
 	</body>
 </html>

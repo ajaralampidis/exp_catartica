@@ -5,9 +5,17 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"preview": "astro preview"
+		"preview": "astro preview",
+		"test": "vitest run"
 	},
 	"devDependencies": {
-		"astro": "^7.3.2"
+		"@astrojs/check": "^0.9.10",
+		"@types/p5": "^1.7.7",
+		"astro": "^7.3.2",
+		"typescript": "^6.0.3",
+		"vitest": "^5.0.1"
+	},
+	"dependencies": {
+		"p5": "^2.3.3"
 	}
 }
