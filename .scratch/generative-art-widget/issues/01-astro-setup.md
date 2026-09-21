@@ -4,11 +4,11 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `pnpm install` succeeds from a clean clone
-- [ ] `pnpm dev` serves a home page locally
-- [ ] `pnpm build` produces a static build with no errors
-- [ ] TypeScript strict mode is enabled
-- [ ] Node version is pinned via `.nvmrc` to the current LTS release
-- [ ] `package.json` scripts cover install/dev/build via pnpm
+- [x] `pnpm install` succeeds from a clean clone
+- [x] `pnpm dev` serves a home page locally
+- [x] `pnpm build` produces a static build with no errors
+- [x] TypeScript strict mode is enabled
+- [x] Node version is pinned via `.nvmrc` to the current LTS release (24)
+- [x] `package.json` scripts cover install/dev/build via pnpm

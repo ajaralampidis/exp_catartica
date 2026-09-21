@@ -4,11 +4,11 @@
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The Vercel project is linked to this GitHub repo via manually configured settings (build command, output directory), not the dashboard's automatic import wizard
-- [ ] A push to `main` triggers a new deploy without manual intervention
-- [ ] The deployed URL serves the same home page `pnpm build` produces locally
-- [ ] The steps taken are written down (README or a comment on this ticket) so they're understandable and repeatable, not just clicked through
+- [x] The Vercel project is linked to this GitHub repo via manually configured settings (build command, output directory), not the dashboard's automatic import wizard
+- [x] A push to `main` triggers a new deploy without manual intervention
+- [x] The deployed URL serves the same home page `pnpm build` produces locally
+- [x] The steps taken are written down (README or a comment on this ticket) so they're understandable and repeatable, not just clicked through
 
 Note: linking a GitHub repo to a Vercel account requires an OAuth click only a human can make. If this blocks an unattended agent, hand the account-linking step to `/wizard` and let this ticket cover the rest (build settings, deploy hook verification, writing down the steps).
