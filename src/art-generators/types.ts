@@ -7,7 +7,10 @@ export type EntropySources = {
 	viewportSize: { width: number; height: number };
 };
 
+// Colors of a finished artwork. The page uses them to match its own colors.
+export type ArtPalette = { background: string; stroke: string };
+
 export interface ArtGenerator {
 	readonly supportsSvgExport: boolean;
-	draw(p: p5, writing: string, size: CanvasSize, entropy: EntropySources): void;
+	draw(p: p5, writing: string, size: CanvasSize, entropy: EntropySources): ArtPalette | void;
 }
