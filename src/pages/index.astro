@@ -1,59 +1,60 @@
 ---
 // Home page
+import themeOrder from 'daisyui/functions/themeOrder';
+import '../styles/global.css';
+
+const defaultTheme = 'catartica';
+const themes = [defaultTheme, ...themeOrder];
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme={defaultTheme}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Expresión Catártica</title>
-		<style>
-			body {
-				max-width: 640px;
-				margin: 2rem auto;
-				font-family: sans-serif;
-				text-align: center;
-			}
-			textarea {
-				width: 100%;
-			}
-			#canvas-container :global(canvas) {
-				max-width: 100%;
-				height: auto !important;
-			}
-		</style>
 	</head>
-	<body>
-		<h1>Expresión Catártica</h1>
+	<body class="mx-auto flex max-w-2xl flex-col items-center gap-4 p-8 text-center">
+		<button id="theme" class="btn">Theme</button>
+
+		<h1 class="text-3xl font-bold">Expresión Catártica</h1>
 		<p>Generative art from your writing.</p>
 
-		<textarea id="writing" rows="6" placeholder="Write here..."></textarea>
+		<textarea id="writing" class="textarea w-full" rows="6" placeholder="Write here..."></textarea>
 
-		<div>
+		<div class="flex w-full flex-wrap items-center justify-center gap-2">
 			<label for="canvas-preset">Canvas size</label>
-			<select id="canvas-preset">
+			<select id="canvas-preset" class="select">
 				<option value="square">Square (1:1)</option>
 				<option value="portrait">Portrait (4:5)</option>
 				<option value="story">Story (9:16)</option>
 				<option value="custom">Custom</option>
 			</select>
-			<input id="canvas-width" type="number" placeholder="Width" min="1" hidden />
-			<input id="canvas-height" type="number" placeholder="Height" min="1" hidden />
+			<input id="canvas-width" class="input w-20" type="number" placeholder="Width" min="1" hidden />
+			<input id="canvas-height" class="input w-20" type="number" placeholder="Height" min="1" hidden />
 		</div>
 
-		<div>
-			<button id="generate">Generate</button>
-			<button id="export-jpg">Export JPG</button>
-			<button id="export-svg">Export SVG</button>
+		<div class="flex gap-2">
+			<button id="generate" class="btn">Generate</button>
+			<button id="export-jpg" class="btn">Export JPG</button>
+			<button id="export-svg" class="btn">Export SVG</button>
 		</div>
 
 		<p id="error" role="alert"></p>
 
-		<div id="canvas-container"></div>
+		<div id="canvas-container" class="[&_canvas]:h-auto! [&_canvas]:max-w-full"></div>
 
 		<script src="../widget/widget.ts"></script>
+		<script is:inline define:vars={{ themes }}>
+			const themeButton = document.getElementById('theme');
+			let index = 0;
+			themeButton.addEventListener('click', () => {
+				index = (index + 1) % themes.length;
+				document.documentElement.dataset.theme = themes[index];
+				themeButton.textContent = themes[index];
+			});
+		</script>
 	</body>
 </html>
