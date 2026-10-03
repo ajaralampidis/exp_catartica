@@ -1,43 +1,39 @@
 import p5 from 'p5';
-import { placeholderArtGenerator } from '../art-generators/placeholder';
-import type { EntropySources } from '../art-generators/types';
-import {
-	type CanvasSizePreset,
-	isValidWriting,
-	listExportFormats,
-	resolveCanvasSize,
-} from '../lib/widget-core';
+import { nestedSquaresArtGenerator } from '../art-generators/nested-squares/nested-squares';
+import type { ArtPalette, EntropySources } from '../art-generators/types';
+import { isValidWriting } from '../lib/widget-core';
 
-const generator = placeholderArtGenerator;
+const generator = nestedSquaresArtGenerator;
+const DEBOUNCE_MS = 3000;
+const MIN_FONT_SIZE = 12; // px
 
+const stage = document.querySelector<HTMLElement>('main')!;
 const writingInput = document.querySelector<HTMLTextAreaElement>('#writing')!;
-const presetSelect = document.querySelector<HTMLSelectElement>('#canvas-preset')!;
-const widthInput = document.querySelector<HTMLInputElement>('#canvas-width')!;
-const heightInput = document.querySelector<HTMLInputElement>('#canvas-height')!;
-const generateButton = document.querySelector<HTMLButtonElement>('#generate')!;
-const exportJpgButton = document.querySelector<HTMLButtonElement>('#export-jpg')!;
-const exportSvgButton = document.querySelector<HTMLButtonElement>('#export-svg')!;
 const canvasContainer = document.querySelector<HTMLDivElement>('#canvas-container')!;
-const errorMessage = document.querySelector<HTMLParagraphElement>('#error')!;
+const baseFontSize = parseFloat(getComputedStyle(writingInput).fontSize);
 
-if (!listExportFormats(generator).includes('svg')) {
-	exportSvgButton.hidden = true;
+// The textarea grows with its text up to its max height. After that the text
+// shrinks to fit, but never below MIN_FONT_SIZE. Past that it scrolls.
+function fitText() {
+	let size = baseFontSize;
+	writingInput.style.fontSize = `${size}px`;
+	while (writingInput.scrollHeight > writingInput.clientHeight && size > MIN_FONT_SIZE) {
+		size -= 1;
+		writingInput.style.fontSize = `${size}px`;
+	}
 }
 
-presetSelect.addEventListener('change', () => {
-	const isCustom = presetSelect.value === 'custom';
-	widthInput.hidden = !isCustom;
-	heightInput.hidden = !isCustom;
-});
-
-function currentCanvasSize() {
-	if (presetSelect.value === 'custom') {
-		return resolveCanvasSize({
-			width: Number(widthInput.value) || 0,
-			height: Number(heightInput.value) || 0,
-		});
+// Gives the page the colors of the artwork, over whatever theme is on. Without
+// a palette the theme's own colors come back.
+function matchTheme(palette?: ArtPalette | void) {
+	const style = document.documentElement.style;
+	if (palette) {
+		style.setProperty('--color-base-100', palette.background);
+		style.setProperty('--color-base-content', palette.stroke);
+	} else {
+		style.removeProperty('--color-base-100');
+		style.removeProperty('--color-base-content');
 	}
-	return resolveCanvasSize(presetSelect.value as CanvasSizePreset);
 }
 
 function readEntropySources(sketch: p5): EntropySources {
@@ -49,29 +45,43 @@ function readEntropySources(sketch: p5): EntropySources {
 }
 
 let sketchInstance: p5 | null = null;
+let lastWriting = '';
+let typingTimer: number | undefined;
 
-generateButton.addEventListener('click', () => {
+function generate() {
 	const writing = writingInput.value;
-	if (!isValidWriting(writing)) {
-		errorMessage.textContent = 'Write something first.';
-		return;
+	if (writing !== lastWriting) {
+		lastWriting = writing;
+		sketchInstance?.remove();
+		sketchInstance = null;
+		if (isValidWriting(writing)) {
+			const size = { width: canvasContainer.clientWidth, height: canvasContainer.clientHeight };
+			sketchInstance = new p5((sketch: p5) => {
+				sketch.setup = () => {
+					sketch.createCanvas(size.width, size.height);
+					sketch.noLoop();
+				};
+				sketch.draw = () => {
+					matchTheme(generator.draw(sketch, writing, size, readEntropySources(sketch)));
+				};
+			}, canvasContainer);
+		} else {
+			matchTheme();
+		}
 	}
-	errorMessage.textContent = '';
+	stage.toggleAttribute('data-art', sketchInstance !== null);
+}
 
-	const size = currentCanvasSize();
-
-	sketchInstance?.remove();
-	sketchInstance = new p5((sketch: p5) => {
-		sketch.setup = () => {
-			sketch.createCanvas(size.width, size.height);
-			sketch.noLoop();
-		};
-		sketch.draw = () => {
-			generator.draw(sketch, writing, size, readEntropySources(sketch));
-		};
-	}, canvasContainer);
+// The art goes stale once the text changes. It is generated when typing stops,
+// or right away if the textarea loses focus. The textarea keeps its focus.
+writingInput.addEventListener('input', () => {
+	fitText();
+	stage.toggleAttribute('data-art', false);
+	clearTimeout(typingTimer);
+	typingTimer = window.setTimeout(generate, DEBOUNCE_MS);
 });
-
-exportJpgButton.addEventListener('click', () => {
-	sketchInstance?.saveCanvas('expresion-catartica', 'jpg');
+writingInput.addEventListener('blur', () => {
+	clearTimeout(typingTimer);
+	generate();
 });
+window.addEventListener('resize', fitText);

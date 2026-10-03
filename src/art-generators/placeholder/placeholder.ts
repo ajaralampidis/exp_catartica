@@ -1,4 +1,4 @@
-import type { ArtGenerator } from './types';
+import type { ArtGenerator } from '../types';
 
 const LINES_PER_LETTER = 100;
 const FONT_STACK = 'Georgia, "Times New Roman", serif';

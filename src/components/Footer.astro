@@ -1,0 +1,24 @@
+---
+import themeOrder from 'daisyui/functions/themeOrder';
+
+interface Props {
+	defaultTheme: string;
+}
+
+const { defaultTheme } = Astro.props;
+const themes = [defaultTheme, ...themeOrder];
+---
+
+<footer class="flex justify-end border-t-2 border-base-content/20">
+	<button id="theme" class="btn btn-ghost btn-sm font-light rounded-none border-l-inherit border-l-2 min-w-[15ch] text-base-content">{defaultTheme}</button>
+</footer>
+
+<script is:inline define:vars={{ themes }}>
+	const themeButton = document.getElementById('theme');
+	let index = 0;
+	themeButton.addEventListener('click', () => {
+		index = (index + 1) % themes.length;
+		document.documentElement.dataset.theme = themes[index];
+		themeButton.textContent = themes[index];
+	});
+</script>

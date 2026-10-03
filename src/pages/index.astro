@@ -1,10 +1,10 @@
 ---
 // Home page
-import themeOrder from 'daisyui/functions/themeOrder';
+import { Font } from 'astro:assets';
+import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
 const defaultTheme = 'catartica';
-const themes = [defaultTheme, ...themeOrder];
 ---
 
 <!DOCTYPE html>
@@ -15,46 +15,38 @@ const themes = [defaultTheme, ...themeOrder];
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Expresión Catártica</title>
+		<Font cssVariable="--font-courier-prime" preload />
 	</head>
-	<body class="mx-auto flex max-w-2xl flex-col items-center gap-4 p-8 text-center">
-		<button id="theme" class="btn">Theme</button>
+	<body class="flex min-h-dvh flex-col">
+		<header class="@container">
+			<h1 class="font-display text-[calc(100cqw/11.4)] leading-none font-bold whitespace-nowrap opacity-10">Expresión Catártica</h1>
+		</header>
 
-		<h1 class="text-3xl font-bold">Expresión Catártica</h1>
-		<p>Generative art from your writing.</p>
+		<main class="group flex flex-1 flex-col p-2">
+			<!-- <div class="flex w-full flex-wrap items-center justify-center gap-2">
+				<label for="canvas-preset">Canvas size</label>
+				<select id="canvas-preset" class="select">
+					<option value="square">Square (1:1)</option>
+					<option value="portrait">Portrait (4:5)</option>
+					<option value="story">Story (9:16)</option>
+					<option value="custom">Custom</option>
+				</select>
+				<input id="canvas-width" class="input w-20" type="number" placeholder="Width" min="1" hidden />
+				<input id="canvas-height" class="input w-20" type="number" placeholder="Height" min="1" hidden />
+			</div> -->
 
-		<textarea id="writing" class="textarea w-full" rows="6" placeholder="Write here..."></textarea>
+			<!-- <div class="flex gap-2">
+				<button id="generate" class="btn">Generate</button>
+				<button id="export-jpg" class="btn">Export JPG</button>
+				<button id="export-svg" class="btn">Export SVG</button>
+			</div> -->
 
-		<div class="flex w-full flex-wrap items-center justify-center gap-2">
-			<label for="canvas-preset">Canvas size</label>
-			<select id="canvas-preset" class="select">
-				<option value="square">Square (1:1)</option>
-				<option value="portrait">Portrait (4:5)</option>
-				<option value="story">Story (9:16)</option>
-				<option value="custom">Custom</option>
-			</select>
-			<input id="canvas-width" class="input w-20" type="number" placeholder="Width" min="1" hidden />
-			<input id="canvas-height" class="input w-20" type="number" placeholder="Height" min="1" hidden />
-		</div>
+			<textarea id="writing" class="textarea field-sizing-content max-h-40 w-full resize-none rounded-none border-0 border-b-2 bg-transparent focus:outline-hidden text-center text-3xl" rows="1" placeholder="Write here..."></textarea>
+			<div id="canvas-container" class="relative grow overflow-hidden opacity-0 transition-opacity duration-200 group-data-art:opacity-100 group-data-art:duration-4000 [&_canvas]:absolute [&_canvas]:inset-0 [&_canvas]:h-full! [&_canvas]:w-full! [&_canvas]:object-cover"></div>
+		</main>
 
-		<div class="flex gap-2">
-			<button id="generate" class="btn">Generate</button>
-			<button id="export-jpg" class="btn">Export JPG</button>
-			<button id="export-svg" class="btn">Export SVG</button>
-		</div>
-
-		<p id="error" role="alert"></p>
-
-		<div id="canvas-container" class="[&_canvas]:h-auto! [&_canvas]:max-w-full"></div>
+		<Footer {defaultTheme} />
 
 		<script src="../widget/widget.ts"></script>
-		<script is:inline define:vars={{ themes }}>
-			const themeButton = document.getElementById('theme');
-			let index = 0;
-			themeButton.addEventListener('click', () => {
-				index = (index + 1) % themes.length;
-				document.documentElement.dataset.theme = themes[index];
-				themeButton.textContent = themes[index];
-			});
-		</script>
 	</body>
 </html>

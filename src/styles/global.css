@@ -5,19 +5,19 @@
 @plugin "daisyui/theme" {
 	name: "catartica";
 	color-scheme: light;
-	--root-bg: oklch(95% 0.05 29);
-	--color-base-100: oklch(92% 0.055 29);
-	--color-base-200: oklch(91% 0.06 29);
-	--color-base-300: oklch(86% 0.07 29);
-	--color-base-content: oklch(25% 0.05 29);
-	--color-primary: oklch(57% 0.21 29);
-	--color-primary-content: oklch(98% 0.01 29);
-	--color-secondary: oklch(68% 0.16 99);
+	/*--root-bg: oklch(80% 0.03 340); */
+	--color-base-100: oklch(85% 0.025 340);
+	--color-base-200: oklch(88% 0.025 340);
+	--color-base-300: oklch(91% 0.025 340);
+	--color-base-content: oklch(25% 0.1 340);
+	--color-primary: oklch(57% 0.21 340);
+	--color-primary-content: oklch(98% 0.01 340);
+	--color-secondary: oklch(68% 0.14 99);
 	--color-secondary-content: oklch(22% 0.04 99);
-	--color-accent: oklch(74% 0.15 319);
+	--color-accent: oklch(80% 1 5);
 	--color-accent-content: oklch(22% 0.04 319);
-	--color-neutral: oklch(32% 0.05 29);
-	--color-neutral-content: oklch(98% 0.01 29);
+	--color-neutral: oklch(32% 0.05 340);
+	--color-neutral-content: oklch(98% 0.01 340);
 	--color-info: oklch(72% 0.13 235);
 	--color-info-content: oklch(22% 0.04 235);
 	--color-success: oklch(72% 0.17 150);
@@ -28,10 +28,29 @@
 	--color-error-content: oklch(22% 0.04 25);
 	--radius-selector: 0.5rem;
 	--radius-field: 0.25rem;
-	--radius-box: 0.5rem;
+	--radius-box: 0.25rem;
 	--size-selector: 0.25rem;
 	--size-field: 0.25rem;
-	--border: 1px;
+	--border: 0.5px;
 	--depth: 0;
 	--noise: 0;
+}
+@theme inline {
+	--font-display: var(--font-courier-prime);
+}
+
+/* The page colors fade when the artwork or the theme changes them. Typed
+   variables animate, and everything that reads them follows in step. */
+@property --color-base-100 {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: transparent;
+}
+@property --color-base-content {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: transparent;
+}
+html {
+	transition: --color-base-100 1s, --color-base-content 1s;
 }
