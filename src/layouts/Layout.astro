@@ -1,0 +1,28 @@
+---
+import { Font } from 'astro:assets';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+}
+
+const { title = 'Expresión Catártica' } = Astro.props;
+const defaultTheme = 'catartica';
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme={defaultTheme}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<Font cssVariable="--font-courier-prime" preload />
+	</head>
+	<body class="flex min-h-dvh flex-col">
+		<slot />
+		<Footer {defaultTheme} />
+	</body>
+</html>

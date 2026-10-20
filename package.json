@@ -7,11 +7,13 @@
 		"dev-stop": "astro dev stop",
 		"build": "astro build",
 		"preview": "astro preview",
-		"test": "vitest run"
+		"test": "vitest run",
+		"save-post": "node --env-file=.env scripts/save-post.ts"
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.10",
 		"@tailwindcss/vite": "^4.3.3",
+		"@types/node": "^24.19.2",
 		"@types/p5": "^1.7.7",
 		"astro": "^7.3.2",
 		"daisyui": "^5.7.47",

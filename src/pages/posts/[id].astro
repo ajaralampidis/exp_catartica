@@ -1,0 +1,17 @@
+---
+// One Post in full screen.
+import PostArt from '../../components/PostArt.astro';
+import Layout from '../../layouts/Layout.astro';
+import { loadPosts } from '../../posts/load-posts.ts';
+
+export function getStaticPaths() {
+	return loadPosts().map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+---
+
+<Layout title="Post · Expresión Catártica">
+	<PostArt post={post} class="fixed inset-0 z-10" />
+	<a href="/posts" class="btn btn-sm fixed top-2 left-2 z-20">← posts</a>
+</Layout>

@@ -1,6 +1,7 @@
-import p5 from 'p5';
+import type p5 from 'p5';
 import { nestedSquaresArtGenerator } from '../art-generators/nested-squares/nested-squares';
-import type { ArtPalette, EntropySources } from '../art-generators/types';
+import { sketchArt } from '../art-generators/sketch-art';
+import type { ArtPalette } from '../art-generators/types';
 import { isValidWriting } from '../lib/widget-core';
 
 const generator = nestedSquaresArtGenerator;
@@ -36,14 +37,6 @@ function matchTheme(palette?: ArtPalette | void) {
 	}
 }
 
-function readEntropySources(sketch: p5): EntropySources {
-	return {
-		time: Date.now(),
-		mousePosition: { x: sketch.mouseX, y: sketch.mouseY },
-		viewportSize: { width: window.innerWidth, height: window.innerHeight },
-	};
-}
-
 let sketchInstance: p5 | null = null;
 let lastWriting = '';
 let typingTimer: number | undefined;
@@ -55,16 +48,7 @@ function generate() {
 		sketchInstance?.remove();
 		sketchInstance = null;
 		if (isValidWriting(writing)) {
-			const size = { width: canvasContainer.clientWidth, height: canvasContainer.clientHeight };
-			sketchInstance = new p5((sketch: p5) => {
-				sketch.setup = () => {
-					sketch.createCanvas(size.width, size.height);
-					sketch.noLoop();
-				};
-				sketch.draw = () => {
-					matchTheme(generator.draw(sketch, writing, size, readEntropySources(sketch)));
-				};
-			}, canvasContainer);
+			sketchInstance = sketchArt(canvasContainer, generator, writing, matchTheme);
 		} else {
 			matchTheme();
 		}

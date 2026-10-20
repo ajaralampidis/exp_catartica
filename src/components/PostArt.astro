@@ -1,0 +1,26 @@
+---
+import type { StoredPost } from '../posts/post.ts';
+
+interface Props {
+	post: StoredPost;
+	class?: string;
+}
+
+const { post, class: className } = Astro.props;
+---
+
+<div
+	class:list={['overflow-hidden [&_canvas]:absolute [&_canvas]:inset-0 [&_canvas]:h-full! [&_canvas]:w-full! [&_canvas]:object-cover', className]}
+	data-art-generator={post.artGenerator}
+	data-writing={post.writing}
+>
+</div>
+
+<script>
+	import { artGenerators, type ArtGeneratorName } from '../art-generators/registry.ts';
+	import { sketchArt } from '../art-generators/sketch-art.ts';
+
+	document.querySelectorAll<HTMLElement>('[data-art-generator]').forEach((container) => {
+		sketchArt(container, artGenerators[container.dataset.artGenerator as ArtGeneratorName], container.dataset.writing!);
+	});
+</script>

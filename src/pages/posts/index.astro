@@ -1,0 +1,29 @@
+---
+// Every Post as a list. Click one to see it in full screen.
+import PostArt from '../../components/PostArt.astro';
+import Layout from '../../layouts/Layout.astro';
+import { loadPosts } from '../../posts/load-posts.ts';
+
+const posts = loadPosts();
+---
+
+<Layout title="Posts · Expresión Catártica">
+	<main class="flex-1 p-2">
+		{
+			posts.length === 0 ? (
+				<p>No posts yet.</p>
+			) : (
+				<ul class="grid grid-cols-2 gap-2 md:grid-cols-4">
+					{posts.map((post) => (
+						<li>
+							<a href={`/posts/${post.id}`} class="block">
+								<PostArt post={post} class="relative aspect-square" />
+								<p class="truncate text-sm">{post.writing}</p>
+							</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</main>
+</Layout>

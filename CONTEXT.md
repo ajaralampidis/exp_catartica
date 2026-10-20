@@ -27,11 +27,14 @@ The action that renders Writing through an ArtGenerator onto the Canvas as a liv
 **Export**:
 Saving a Canvas's current output to a file. JPG is available for every ArtGenerator; SVG only for ArtGenerators that support it.
 
-## Planned (not yet built)
-
 **Post**:
-Future action, gated by login, that saves a Generate result into the database (the GitHub-as-database service). No public/private state: a Post is inherently shareable — users only Post what they intend to share, so there's no separate visibility flag.
+A Writing together with the ArtGenerator that draws it, saved into the database (the GitHub-as-database service). Stored as one Markdown file in `posts/`: the ArtGenerator name in the front matter, the Writing as the body. No public/private state: a Post is inherently shareable — users only Post what they intend to share, so there's no separate visibility flag.
 _Avoid_: using "post" for submitting Writing or for Generate — both stay unrestricted and are distinct from Post.
 
 **GitHub-as-database service**:
-Future service that persists Posts using GitHub as the storage backend.
+Persists Posts using GitHub as the storage backend: one commit per Post, through the GitHub REST API (`src/github/`, `src/posts/save-post.ts`). A proof of concept: only a script calls it so far (`pnpm save-post`).
+
+## Planned (not yet built)
+
+**Post action**:
+The Widget action, gated by login, that saves the Generate result as a Post.

@@ -32,6 +32,18 @@ To repeat:
 4. Set the production branch to `main`.
 5. Deploy. Push to `main` to confirm a new deploy starts.
 
+## Posts
+
+Each Post is a Markdown file in `posts/`. The page `/posts` lists them, and each one opens in full screen.
+
+To save a Post to GitHub from your machine:
+
+1. Create a fine-grained token on the repo, with "Contents: Read and write".
+2. Copy `.env.example` to `.env` and fill in the token.
+3. Run `pnpm save-post "your writing"`.
+
+The command makes one commit. Every push to `main` deploys, so the new Post shows after the deploy.
+
 ## Status
 
 🚧 Just getting started.
