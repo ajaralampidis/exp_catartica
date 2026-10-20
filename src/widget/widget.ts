@@ -1,16 +1,22 @@
 import type p5 from 'p5';
-import { nestedSquaresArtGenerator } from '../art-generators/nested-squares/nested-squares';
+import { artGenerators, type ArtGeneratorName } from '../art-generators/registry';
 import { sketchArt } from '../art-generators/sketch-art';
 import type { ArtPalette } from '../art-generators/types';
 import { isValidWriting } from '../lib/widget-core';
+import { publish } from './publish';
 
-const generator = nestedSquaresArtGenerator;
+const artGenerator: ArtGeneratorName = 'nested-squares';
+const generator = artGenerators[artGenerator];
 const DEBOUNCE_MS = 3000;
 const MIN_FONT_SIZE = 12; // px
 
 const stage = document.querySelector<HTMLElement>('main')!;
 const writingInput = document.querySelector<HTMLTextAreaElement>('#writing')!;
 const canvasContainer = document.querySelector<HTMLDivElement>('#canvas-container')!;
+const publishForm = document.querySelector<HTMLFormElement>('#publish')!;
+const secretPhraseInput = document.querySelector<HTMLInputElement>('#secret-phrase')!;
+const publishButton = document.querySelector<HTMLButtonElement>('#publish button')!;
+const publishStatus = document.querySelector<HTMLElement>('#publish-status')!;
 const baseFontSize = parseFloat(getComputedStyle(writingInput).fontSize);
 
 // The textarea grows with its text up to its max height. After that the text
@@ -69,3 +75,15 @@ writingInput.addEventListener('blur', () => {
 	generate();
 });
 window.addEventListener('resize', fitText);
+
+publishForm.addEventListener('submit', async (event) => {
+	event.preventDefault();
+	if (!isValidWriting(writingInput.value)) {
+		publishStatus.textContent = 'Write something first.';
+		return;
+	}
+	publishButton.disabled = true;
+	publishStatus.textContent = 'Publishing...';
+	publishStatus.textContent = await publish(artGenerator, writingInput.value, secretPhraseInput.value);
+	publishButton.disabled = false;
+});

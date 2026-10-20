@@ -1,8 +1,10 @@
+import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
 	output: 'static',
+	adapter: vercel(),
 	fonts: [
 		{
 			provider: fontProviders.google(),

@@ -28,6 +28,11 @@ import Layout from '../layouts/Layout.astro';
 		</div> -->
 
 		<textarea id="writing" class="textarea field-sizing-content max-h-40 w-full resize-none rounded-none border-0 border-b-2 bg-transparent focus:outline-hidden text-center text-3xl" rows="1" placeholder="Write here..."></textarea>
+		<form id="publish" class="flex flex-wrap items-center justify-center gap-2 py-2">
+			<input id="secret-phrase" type="password" class="input input-sm" placeholder="Secret phrase" autocomplete="off" required />
+			<button class="btn btn-sm">Publish</button>
+			<p id="publish-status" role="status" class="text-sm"></p>
+		</form>
 		<div id="canvas-container" class="relative grow overflow-hidden opacity-0 transition-opacity duration-200 group-data-art:opacity-100 group-data-art:duration-4000 [&_canvas]:absolute [&_canvas]:inset-0 [&_canvas]:h-full! [&_canvas]:w-full! [&_canvas]:object-cover"></div>
 	</main>
 
