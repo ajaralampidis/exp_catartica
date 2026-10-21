@@ -1,5 +1,6 @@
 ---
-// One Post in full screen.
+// One Post. Its text sits above the artwork, laid out like the home page.
+import PageTitle from '../../components/PageTitle.astro';
 import PostArt from '../../components/PostArt.astro';
 import Layout from '../../layouts/Layout.astro';
 import { loadPosts } from '../../posts/load-posts.ts';
@@ -12,6 +13,10 @@ const { post } = Astro.props;
 ---
 
 <Layout title="Post · Expresión Catártica">
-	<PostArt post={post} class="fixed inset-0 z-10" />
+	<PageTitle text="Expresiones" />
+	<main class="flex flex-1 flex-col p-2">
+		<p class="max-h-40 overflow-y-auto border-b-2 border-base-content/20 px-3 py-2 text-center text-3xl whitespace-pre-wrap">{post.writing}</p>
+		<PostArt post={post} class="relative grow" />
+	</main>
 	<a href="/posts" class="btn btn-sm fixed top-2 left-2 z-20">← posts</a>
 </Layout>

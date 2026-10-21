@@ -36,7 +36,7 @@ To repeat:
 
 Each Post is a Markdown file in `posts/`. The page `/posts` lists them, and each one opens in full screen.
 
-To publish from the site: write, type the secret phrase, click Publish. The server (`/api/posts`) commits the Post to `main`.
+To save from the site: write, click the save icon, type the secret phrase in the modal. The server (`/api/posts`) commits the Post to `main`.
 
 To save a Post to GitHub from your machine:
 
@@ -46,7 +46,7 @@ To save a Post to GitHub from your machine:
 
 Both ways make one commit. Every push to `main` deploys, so the new Post shows after the deploy.
 
-`pnpm dev` loads `.env`, so Publish on localhost commits to the real repo.
+`pnpm dev` loads `.env`, so Save on localhost commits to the real repo.
 
 The site runs `/api/posts` as a Vercel function (`@astrojs/vercel`). Set these Production env vars in Vercel: `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`, `SECRET_PHRASE`.
 

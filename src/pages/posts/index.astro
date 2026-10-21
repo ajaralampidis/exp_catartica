@@ -1,6 +1,6 @@
 ---
 // Every Post as a list. Click one to see it in full screen.
-import PostArt from '../../components/PostArt.astro';
+import PageTitle from '../../components/PageTitle.astro';
 import Layout from '../../layouts/Layout.astro';
 import { loadPosts } from '../../posts/load-posts.ts';
 
@@ -8,17 +8,20 @@ const posts = loadPosts();
 ---
 
 <Layout title="Posts · Expresión Catártica">
+	<PageTitle text="Expresiones" />
 	<main class="flex-1 p-2">
 		{
 			posts.length === 0 ? (
-				<p>No posts yet.</p>
+				<p class="text-center">No posts yet.</p>
 			) : (
-				<ul class="grid grid-cols-2 gap-2 md:grid-cols-4">
+				<ul class="mx-auto flex max-w-2xl flex-col divide-y divide-primary/30">
 					{posts.map((post) => (
 						<li>
-							<a href={`/posts/${post.id}`} class="block">
-								<PostArt post={post} class="relative aspect-square" />
-								<p class="truncate text-sm">{post.writing}</p>
+							<a
+								href={`/posts/${post.id}`}
+								class="block truncate rounded-box px-4 py-2 text-center transition-colors hover:bg-base-content/10 focus-visible:bg-base-content/10 focus-visible:outline-hidden"
+							>
+								{post.writing}
 							</a>
 						</li>
 					))}

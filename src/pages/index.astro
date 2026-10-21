@@ -1,12 +1,12 @@
 ---
 // Home page
+import PageTitle from '../components/PageTitle.astro';
+import SaveIcon from '../components/SaveIcon.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-	<header class="@container">
-		<h1 class="font-display text-[calc(100cqw/11.4)] leading-none font-bold whitespace-nowrap opacity-10">Expresión Catártica</h1>
-	</header>
+	<PageTitle text="Expresión Catártica" />
 
 	<main class="group flex flex-1 flex-col p-2">
 		<!-- <div class="flex w-full flex-wrap items-center justify-center gap-2">
@@ -27,12 +27,27 @@ import Layout from '../layouts/Layout.astro';
 			<button id="export-svg" class="btn">Export SVG</button>
 		</div> -->
 
-		<textarea id="writing" class="textarea field-sizing-content max-h-40 w-full resize-none rounded-none border-0 border-b-2 bg-transparent focus:outline-hidden text-center text-3xl" rows="1" placeholder="Write here..."></textarea>
-		<form id="publish" class="flex flex-wrap items-center justify-center gap-2 py-2">
-			<input id="secret-phrase" type="password" class="input input-sm" placeholder="Secret phrase" autocomplete="off" required />
-			<button class="btn btn-sm">Publish</button>
-			<p id="publish-status" role="status" class="text-sm"></p>
-		</form>
+		<div class="relative">
+			<textarea id="writing" class="textarea field-sizing-content max-h-40 w-full resize-none rounded-none border-0 border-b-2 bg-transparent pr-14 focus:outline-hidden text-center text-3xl" rows="1" placeholder="Write here..."></textarea>
+			<button id="save" class="btn btn-outline btn-square absolute top-1/2 right-0 -translate-y-1/2" aria-label="Save" disabled>
+				<SaveIcon />
+			</button>
+		</div>
+		<dialog id="save-modal" class="modal">
+			<form id="save-form" class="modal-box flex flex-col gap-4">
+				<label for="secret-phrase">Secret phrase</label>
+				<input id="secret-phrase" type="password" class="input w-full" autocomplete="off" required />
+				<div class="flex items-center justify-between gap-2">
+					<p id="save-result" role="status" class="text-sm"></p>
+					<button class="btn btn-square shrink-0" aria-label="Save">
+						<SaveIcon />
+					</button>
+				</div>
+			</form>
+			<form method="dialog" class="modal-backdrop">
+				<button>close</button>
+			</form>
+		</dialog>
 		<div id="canvas-container" class="relative grow overflow-hidden opacity-0 transition-opacity duration-200 group-data-art:opacity-100 group-data-art:duration-4000 [&_canvas]:absolute [&_canvas]:inset-0 [&_canvas]:h-full! [&_canvas]:w-full! [&_canvas]:object-cover"></div>
 	</main>
 

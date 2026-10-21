@@ -12,9 +12,9 @@ function reply(status: number, body: object): Response {
 	return Response.json(body, { status });
 }
 
-// The server side of the Publish button. The request holds the Writing, the
-// ArtGenerator and the secret phrase. It saves a Post only if the phrase is right.
-export async function publishPost(request: Request, env: Env): Promise<Response> {
+// The server side of Save. The request holds the Writing, the ArtGenerator and
+// the secret phrase. It saves a Post only if the phrase is right.
+export async function handleSave(request: Request, env: Env): Promise<Response> {
 	const { artGenerator, writing, secretPhrase } = await request.json().catch(() => ({}));
 	const expected = normalize(env.SECRET_PHRASE);
 	if (!expected || normalize(secretPhrase) !== expected) return reply(401, { error: 'Wrong secret phrase.' });

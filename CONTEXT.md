@@ -32,15 +32,15 @@ A Writing together with the ArtGenerator that draws it, saved into the database 
 _Avoid_: using "post" for submitting Writing or for Generate — both stay unrestricted and are distinct from Post.
 
 **GitHub-as-database service**:
-Persists Posts using GitHub as the storage backend: one commit per Post, through the GitHub REST API (`src/github/`, `src/posts/save-post.ts`). Two callers: the Publish endpoint and `pnpm save-post`.
+Persists Posts using GitHub as the storage backend: one commit per Post, through the GitHub REST API (`src/github/`, `src/posts/save-post.ts`). Two callers: the Save endpoint and `pnpm save-post`.
 
-**Publish**:
+**Save**:
 The Widget action that saves the Writing as a Post. The Widget sends the Writing, the ArtGenerator and the Secret phrase to the server (`/api/posts`), which saves the Post only if the phrase is right. The Post shows on the site after the next deploy.
 
 **Secret phrase**:
-A phrase shared with the workshop, set as `SECRET_PHRASE` on the server. Publish asks for it; case and outer spaces don't count. A stopgap gate until a login exists.
+A phrase shared with the workshop, set as `SECRET_PHRASE` on the server. Save asks for it in a modal; case and outer spaces don't count. A stopgap gate until a login exists.
 
 ## Planned (not yet built)
 
 **Login**:
-Replaces the Secret phrase as the gate on Publish.
+Replaces the Secret phrase as the gate on Save.
